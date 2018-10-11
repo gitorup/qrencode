@@ -1,2 +1,2 @@
-# qrencode
-qrencode for Qt
+# qrtool
+qrencode tool for Qt
