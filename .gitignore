@@ -1,0 +1,8 @@
+debug/
+release/
+Makefile
+Makefile.Debug
+Makefile.Release
+gmon.out
+qrtool.pro.user
+ui_widget.h
