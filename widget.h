@@ -23,6 +23,7 @@ public:
 private:
     Ui::Widget *ui;
     QImage *image;
+    void genQrcodeImage(char *qr_str, int width, int height);
 
 public slots:
     void genBtnTriggered(void);
