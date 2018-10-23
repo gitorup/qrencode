@@ -108,11 +108,11 @@ void Widget::sizeChanged(QString index)
     if (index.compare(index, "100%") == 0) {
         margin = 10;
     } else if (index.compare(index, "75%") == 0) {
-        margin = 20;
+        margin = 25;
     } else if (index.compare(index, "50%") == 0) {
-        margin = 30;
+        margin = 50;
     } else if (index.compare(index, "25%") == 0) {
-        margin = 40;
+        margin = 75;
     } else {
         margin = 10;
     }
@@ -124,13 +124,13 @@ void Widget::rateChanged(QString index)
 {
     qDebug() << "rateChanged: " << index;
     if (index.compare(index, "70%") == 0) {
-        qrcode_rate = 4;
+        qrcode_rate = 3;
     } else if (index.compare(index, "50%") == 0) {
         qrcode_rate = 2;
     } else if (index.compare(index, "30%") == 0) {
-        qrcode_rate = 0;
+        qrcode_rate = 1;
     } else {
-        qrcode_rate = 0;
+        qrcode_rate = 1;
     }
     showQrcodeImage();
 }
