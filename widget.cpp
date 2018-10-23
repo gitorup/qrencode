@@ -16,9 +16,13 @@ Widget::Widget(QWidget *parent) :
     setWindowTitle(tr("QRtool"));
 
     ui->qrLabel->clear();
+    margin = 10;
+    qrcode_rate = 0;
     image = new QImage(ui->qrLabel->width(), ui->qrLabel->height(), QImage::Format_ARGB32);
     connect(ui->genBtn, SIGNAL(clicked()), this, SLOT(genBtnTriggered()));
     connect(ui->saveBtn, SIGNAL(clicked()), this, SLOT(saveBtnTriggered()));
+    connect(ui->rateComBox, SIGNAL(currentTextChanged(QString)), this, SLOT(rateChanged(QString)));
+    connect(ui->sizeComBox, SIGNAL(currentTextChanged(QString)), this, SLOT(sizeChanged(QString)));
 }
 
 Widget::~Widget()
@@ -40,12 +44,11 @@ void Widget::saveBtnTriggered(void)
 void Widget::genQrcodeImage(char *qr_str, int width, int height)
 {
     QRcode *qrcode = NULL;
-    int margin = 10;
 
     if (qr_str == NULL || width <= 0 || height <= 0)
         return ;
 
-    qrcode = QRcode_encodeString(qr_str, 0, QR_ECLEVEL_L, QR_MODE_8, 1);
+    qrcode = QRcode_encodeString(qr_str, qrcode_rate, QR_ECLEVEL_L, QR_MODE_8, 1);
     if(qrcode != NULL) {
         QPainter painter(image);
         unsigned char *point = qrcode->data;
@@ -69,7 +72,7 @@ void Widget::genQrcodeImage(char *qr_str, int width, int height)
     }
 }
 
-void Widget::genBtnTriggered(void)
+void Widget::showQrcodeImage(void)
 {
     QString text;
     QByteArray ba;
@@ -92,4 +95,42 @@ void Widget::genBtnTriggered(void)
     }
 
     ui->qrLabel->setPixmap(pixmap);
+}
+
+void Widget::genBtnTriggered(void)
+{
+    showQrcodeImage();
+}
+
+void Widget::sizeChanged(QString index)
+{
+    qDebug() << "sizeChanged: " << index;
+    if (index.compare(index, "100%") == 0) {
+        margin = 10;
+    } else if (index.compare(index, "75%") == 0) {
+        margin = 20;
+    } else if (index.compare(index, "50%") == 0) {
+        margin = 30;
+    } else if (index.compare(index, "25%") == 0) {
+        margin = 40;
+    } else {
+        margin = 10;
+    }
+
+    showQrcodeImage();
+}
+
+void Widget::rateChanged(QString index)
+{
+    qDebug() << "rateChanged: " << index;
+    if (index.compare(index, "70%") == 0) {
+        qrcode_rate = 4;
+    } else if (index.compare(index, "50%") == 0) {
+        qrcode_rate = 2;
+    } else if (index.compare(index, "30%") == 0) {
+        qrcode_rate = 0;
+    } else {
+        qrcode_rate = 0;
+    }
+    showQrcodeImage();
 }
