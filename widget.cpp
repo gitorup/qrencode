@@ -18,7 +18,15 @@ Widget::Widget(QWidget *parent) :
     ui->qrLabel->clear();
     margin = 10;
     qrcode_rate = 0;
+
     image = new QImage(ui->qrLabel->width(), ui->qrLabel->height(), QImage::Format_ARGB32);
+    QPainter painter(image);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(Qt::white);
+    painter.drawRect(0, 0, ui->qrLabel->width(), ui->qrLabel->height());
+    QPixmap pixmap = QPixmap::fromImage(*image);
+    ui->qrLabel->setPixmap(pixmap);
+
     connect(ui->genBtn, SIGNAL(clicked()), this, SLOT(genBtnTriggered()));
     connect(ui->saveBtn, SIGNAL(clicked()), this, SLOT(saveBtnTriggered()));
     connect(ui->rateComBox, SIGNAL(currentTextChanged(QString)), this, SLOT(rateChanged(QString)));
@@ -78,7 +86,7 @@ void Widget::showQrcodeImage(void)
     QByteArray ba;
     char *text_str;
     QPixmap pixmap;
-    text = ui->textEdit->text();
+    text = ui->textEdit->toPlainText();
     if (text.isNull() || text.isEmpty()) {
         QMessageBox::information(this, tr("Error"), tr("Please input serial number!"));
         return ;
